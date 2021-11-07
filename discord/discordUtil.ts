@@ -14,7 +14,7 @@ export async function refreshData(discord: DiscordClient) {
     for (const user of appData.users) {
         console.log("Looking for " + user.name)
         if (user.roleId == null) {
-            const role = await guild.roles.fetch(user.name);
+            const role = await guild.roles.cache.find(r => r.name.toLowerCase() == user.name.toLowerCase());
             if (role != null) {
                 user.roleId = role.id;
             } else {
