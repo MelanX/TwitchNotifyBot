@@ -1,0 +1,21 @@
+{
+  "name": "notifybot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "MelanX",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@twurple/api": "^5.0.8",
+    "@types/node-fetch": "2.5.12",
+    "axios": "^0.24.0",
+    "discord.js": "13.3.1",
+    "dotenv": "8.2.0",
+    "node-fetch": "2.6.6",
+    "typescript": "4.4.4"
+  }
+}
