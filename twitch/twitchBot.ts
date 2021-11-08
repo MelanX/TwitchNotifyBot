@@ -35,7 +35,7 @@ async function lookingForStreamers(twitch: ApiClient) {
                         user.isOnline = true;
                         user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                         user.gameName = stream.gameName;
-                        await sendMessage(user);
+                        user.msgId = await sendMessage(user);
                         console.log(`${user.name} is now online with ${stream.gameName}`)
                     } else {
                         if (String(user.gameId) !== stream.gameId) {

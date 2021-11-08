@@ -99,18 +99,13 @@ export async function guildCategory(discord: DiscordClient, id: Snowflake | unde
     return channel as CategoryChannel;
 }
 
-export async function sendMessage(user: User): Promise<void> {
+export async function sendMessage(user: User): Promise<Snowflake> {
     const guild = await discord.guilds.fetch(files.getConfig().guildId);
-    const appData = files.getAppData();
     const channel = await textChannel(discord, user.channelId);
     const s = await makeMessage(guild, user);
     const msg = await channel.send(s);
-    for (const u of appData.users) {
-        if (u.name == user.name) {
-            u.msgId = msg.id;
-        }
-    }
-    files.setAppData(appData);
+
+    return msg.id;
 }
 
 export async function editMessage(user: User): Promise<void> {
