@@ -2,7 +2,7 @@
 A discord bot which notifies users on a server that specific streamers are live on Twitch.
 
 Here you can find the server where this bot is running
-![Discord Server](https://discord.com/widget?id=588791705101139979&theme=dark)
+[![CastCrafter Server](https://img.shields.io/discord/588791705101139979.svg?color=7289da&label=Twitch%20Notify%20Server&logo=discord&style=flat-square)](https://discord.gg/x45r3a9)
 
 Requires a file `tokens.env` with the following data:
 
