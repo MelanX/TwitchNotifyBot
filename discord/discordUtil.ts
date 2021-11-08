@@ -23,6 +23,7 @@ export async function refreshData(discord: DiscordClient) {
                     mentionable: true
                 });
                 user.roleId = newRole.id;
+                console.log(`Created role ${newRole.name} with id ${newRole.id}`);
             }
         }
 
@@ -36,6 +37,7 @@ export async function refreshData(discord: DiscordClient) {
                 if (image != null) {
                     const newEmote = await guild.emojis.create(image, user.name)
                     user.emoteId = newEmote.id;
+                    console.log(`Created emote ${newEmote.name} with id ${newEmote.id}`);
                 } else {
                     console.log('Could not find an image for ' + user.name);
                 }
@@ -76,6 +78,7 @@ export async function refreshData(discord: DiscordClient) {
                     type: "GUILD_TEXT"
                 });
                 user.channelId = newChannel.id;
+                console.log(`Created channel ${newChannel.name} with id ${newChannel.id}`);
             }
         }
     }
