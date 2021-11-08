@@ -1,6 +1,6 @@
 import {
     CategoryChannel,
-    Client as DiscordClient, Guild, Snowflake, TextChannel
+    Client as DiscordClient, Guild, Permissions, Snowflake, TextChannel
 } from "discord.js";
 import * as files from "../dataUtils";
 import {getProfileImage} from "../twitch/twitchBot";
@@ -56,7 +56,25 @@ export async function refreshData(discord: DiscordClient) {
                 user.channelId = channel.id;
             } else {
                 const category = await guildCategory(discord, config.categoryId);
-                const newChannel = await guild.channels.create(user.name, {parent: category, type: "GUILD_TEXT"});
+                const newChannel = await guild.channels.create(user.name, {
+                    permissionOverwrites: [
+                        {
+                            deny: Permissions.ALL,
+                            id: guild.roles.everyone
+                        },
+                        {
+                            allow: [
+                                Permissions.FLAGS.VIEW_CHANNEL
+                            ],
+                            deny: [
+                                Permissions.FLAGS.SEND_MESSAGES
+                            ],
+                            id: user.roleId
+                        }
+                    ],
+                    parent: category,
+                    type: "GUILD_TEXT"
+                });
                 user.channelId = newChannel.id;
             }
         }
