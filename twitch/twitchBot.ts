@@ -40,9 +40,9 @@ async function lookingForStreamers(twitch: ApiClient) {
                     } else {
                         if (String(user.gameId) !== stream.gameId) {
                             user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
-                            await editMessage(user);
                             console.log(`${user.name} changed game from ${user.gameName} to ${stream.gameName}`)
                             user.gameName = stream.gameName;
+                            await editMessage(user);
                         }
                     }
                     appData.users[i] = user;
