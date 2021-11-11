@@ -28,6 +28,7 @@ export let discord: DiscordClient;
             name: user,
             isOnline: false
         });
+        console.log(`New user found: ${user}`);
     }
     files.setAppData(appData);
 

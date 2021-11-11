@@ -12,7 +12,6 @@ export async function refreshData(discord: DiscordClient) {
     const guild = await discord.guilds.fetch(config.guildId);
     const appData = files.getAppData();
     for (const user of appData.users) {
-        console.log("Looking for " + user.name)
         if (user.roleId == null) {
             const role = await guild.roles.cache.find(r => r.name.toLowerCase() == user.name.toLowerCase());
             if (role != null) {
@@ -35,7 +34,7 @@ export async function refreshData(discord: DiscordClient) {
                 // @ts-ignore
                 const image: string = await getProfileImage(twitchClient, user.name);
                 if (image != null) {
-                    const newEmote = await guild.emojis.create(image, user.name)
+                    const newEmote = await guild.emojis.create(image, user.name);
                     user.emoteId = newEmote.id;
                     console.log(`Created emote ${newEmote.name} with id ${newEmote.id}`);
                 } else {
