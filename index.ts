@@ -1,3 +1,5 @@
+import {createMissingFiles} from "./dataUtils";
+
 require('dotenv').config({path: 'tokens.env'});
 
 import {ApiClient} from "@twurple/api";
@@ -10,6 +12,8 @@ import * as files from "./dataUtils";
 
 export let twitch: ApiClient;
 export let discord: DiscordClient;
+
+createMissingFiles();
 
 (async () => {
     const appData = files.getAppData();
