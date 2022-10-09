@@ -1,4 +1,4 @@
-import {Client as DiscordClient} from "discord.js";
+import {Client as DiscordClient, GatewayIntentBits, Partials} from "discord.js";
 
 export async function registerDiscord(): Promise<DiscordClient> {
     if (process.env.discord === undefined) {
@@ -6,23 +6,23 @@ export async function registerDiscord(): Promise<DiscordClient> {
     }
     const client = new DiscordClient({
         intents: [
-            'GUILDS',
-            'GUILD_MEMBERS',
-            'GUILD_BANS',
-            'GUILD_EMOJIS_AND_STICKERS',
-            'GUILD_INTEGRATIONS',
-            'GUILD_WEBHOOKS',
-            'GUILD_INVITES',
-            'GUILD_VOICE_STATES',
-            'GUILD_PRESENCES',
-            'GUILD_MESSAGES',
-            'GUILD_MESSAGE_REACTIONS',
-            // 'GUILD_MESSAGE_TYPING',
-            'DIRECT_MESSAGES',
-            'DIRECT_MESSAGE_REACTIONS',
-            // 'DIRECT_MESSAGE_TYPING'
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMembers,
+            GatewayIntentBits.GuildBans,
+            GatewayIntentBits.GuildEmojisAndStickers,
+            GatewayIntentBits.GuildIntegrations,
+            GatewayIntentBits.GuildWebhooks,
+            GatewayIntentBits.GuildInvites,
+            GatewayIntentBits.GuildVoiceStates,
+            GatewayIntentBits.GuildPresences,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
+            // GatewayIntentBits.GuildMessageTyping,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.GuildMessageReactions
+            // GatewayIntentBits.DirectMessageTyping
         ],
-        partials: ["CHANNEL", "MESSAGE", "REACTION", "GUILD_MEMBER", "USER"]
+        partials: [Partials.User, Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction]
     });
     await client.once('ready', async () => {
         console.log("Discord is ready");

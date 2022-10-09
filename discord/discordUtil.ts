@@ -1,6 +1,6 @@
 import {
-    CategoryChannel,
-    Client as DiscordClient, Guild, Permissions, Snowflake, TextChannel
+    CategoryChannel, ChannelType,
+    Client as DiscordClient, Guild, Permissions, PermissionsBitField, Snowflake, TextChannel
 } from "discord.js";
 import * as files from "../dataUtils";
 import {getProfileImage} from "../twitch/twitchBot";
@@ -34,7 +34,7 @@ export async function refreshData(discord: DiscordClient) {
                 // @ts-ignore
                 const image: string = await getProfileImage(twitchClient, user.name);
                 if (image != null) {
-                    const newEmote = await guild.emojis.create(image, user.name);
+                    const newEmote = await guild.emojis.create({name: user.name, attachment: image});
                     user.emoteId = newEmote.id;
                     console.log(`Created emote ${newEmote.name} with id ${newEmote.id}`);
                 } else {
@@ -57,24 +57,26 @@ export async function refreshData(discord: DiscordClient) {
                 user.channelId = channel.id;
             } else {
                 const category = await guildCategory(discord, config.categoryId);
-                const newChannel = await guild.channels.create(user.name, {
+                const newChannel = await guild.channels.create({
+                    name: user.name,
+                    type: ChannelType.GuildText,
+                    parent: category,
                     permissionOverwrites: [
                         {
-                            deny: Permissions.ALL,
+                            deny: PermissionsBitField.All,
                             id: guild.roles.everyone
                         },
                         {
                             allow: [
-                                Permissions.FLAGS.VIEW_CHANNEL
+                                PermissionsBitField.Flags.ViewChannel,
+                                PermissionsBitField.Flags.ReadMessageHistory
                             ],
                             deny: [
-                                Permissions.FLAGS.SEND_MESSAGES
+                                PermissionsBitField.Flags.SendMessages
                             ],
                             id: user.roleId
                         }
-                    ],
-                    parent: category,
-                    type: "GUILD_TEXT"
+                    ]
                 });
                 user.channelId = newChannel.id;
                 console.log(`Created channel ${newChannel.name} with id ${newChannel.id}`);
@@ -95,7 +97,7 @@ export async function textChannel(discord: DiscordClient, id: Snowflake | undefi
         throw new Error("Discord channel not found: " + channel);
     }
 
-    if (channel.type != "GUILD_TEXT") {
+    if (channel.type != ChannelType.GuildText) {
         throw new Error("Discord channel is not a text channel: " + channel);
     }
 
@@ -112,7 +114,7 @@ export async function guildCategory(discord: DiscordClient, id: Snowflake | unde
         throw new Error("Discord channel not found: " + channel);
     }
 
-    if (channel.type != "GUILD_CATEGORY") {
+    if (channel.type != ChannelType.GuildCategory) {
         throw new Error("Discord channel is not a guild category: " + channel);
     }
 
