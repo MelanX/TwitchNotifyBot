@@ -12,26 +12,43 @@ export async function startDiscordBot(discord: DiscordClient, newUsersString: st
     const message = await channel.messages.fetch(config.msgId);
 
     const formattedRolesPromises = [];
-    for (const emote of files.getAppData().users) {
-        if (emote.emoteId != null) {
-            await onReaction(discord, guild, message, emote.emoteId, emote.roleId);
+    const removedUsers = [];
+    const existingUsers = files.getConfig().users;
+    const cachedUsers = files.getAppData().users;
+    for (const cachedUser of cachedUsers) {
+        if (cachedUser.emoteId != null) {
+            await onReaction(discord, guild, message, cachedUser.emoteId, cachedUser.roleId);
         } else {
-            console.warn(`Emote ID for ${emote.name} is ${emote.emoteId}`);
+            console.warn(`Emote ID for ${cachedUser.name} is ${cachedUser.emoteId}`);
         }
 
         if (newUsersString.length > 0) {
-            const matchingUser = newUsersString.find(user => user.toLowerCase() === emote.name.toLowerCase());
+            const matchingUser = newUsersString.find(item => item.toLowerCase() === cachedUser.name.toLowerCase());
             if (matchingUser) {
-                const role = await guild.roles.fetch(emote.roleId);
+                const role = await guild.roles.fetch(cachedUser.roleId);
                 formattedRolesPromises.push(`- ${role}`);
             }
         }
+
+        const removedUser = !existingUsers.some(item => item.toLowerCase() === cachedUser.name.toLowerCase());
+        if (removedUser) {
+            removedUsers.push(cachedUser.name);
+        }
     }
 
+    let announcement = "";
     if (newUsersString.length > 0) {
         const formattedRoles = await Promise.all(formattedRolesPromises);
+        announcement += `### Neue StreamerInnen\n\n${formattedRoles.join('\n')}\n\n`;
+    }
+
+    if (removedUsers.length > 0) {
+        announcement += `### Entfernte StreamerInnen\n\n${removedUsers.map(item => `- ${item}`).join('\n')}`
+    }
+
+    if (announcement != "") {
         const announcementChannel = await textChannel(discord, config.announcementChannelId);
-        await announcementChannel.send(`Neue StreamerInnen:\n${formattedRoles.join('\n')}`);
+        await announcementChannel.send(announcement);
     }
 }
 
