@@ -3,7 +3,8 @@ export interface AppConfig {
     guildId: string,
     categoryId: string,
     channelId: string,
-    msgId: string
+    msgId: string,
+    announcementChannelId: string
 }
 
 export interface AppData {

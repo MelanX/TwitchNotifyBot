@@ -21,6 +21,7 @@ createMissingFiles();
         appData.users = [];
     }
 
+    const newUsers = [];
     const cachedUsers = appData.users;
     loop1: for (const user of files.getConfig().users) {
         for (const existingUser of cachedUsers) {
@@ -33,6 +34,7 @@ createMissingFiles();
             isOnline: false
         });
         console.log(`New user found: ${user}`);
+        newUsers.push(user);
     }
     files.setAppData(appData);
 
@@ -41,7 +43,7 @@ createMissingFiles();
 
     while (true) {
         if (discord.isReady()) {
-            await discordBot.startDiscordBot(discord);
+            await discordBot.startDiscordBot(discord, newUsers);
             break;
         }
     }
