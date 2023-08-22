@@ -34,13 +34,14 @@ The config in `data.config.json` should look like this:
   "msgId": "596751004469428232"
 }
 ```
-| Key          | Entry                                                         |
-|--------------|---------------------------------------------------------------|
-| `users`      | An array with the name of the streamers                       |
-| `guildId`    | The ID of the guild where the bot is active                   |
-| `categoryId` | The ID of the category for the text channels                  |
-| `channelId`  | The ID of the channel with the message to react for the roles |
-| `msgId`      | The ID of the message with the reactions                      |
+| Key                     | Entry                                                         |
+|-------------------------|---------------------------------------------------------------|
+| `users`                 | An array with the name of the streamers                       |
+| `guildId`               | The ID of the guild where the bot is active                   |
+| `categoryId`            | The ID of the category for the text channels                  |
+| `channelId`             | The ID of the channel with the message to react for the roles |
+| `announcementChannelId` | The ID of the announcement channel from the server            |
+| `msgId`                 | The ID of the message with the reactions                      |
 ---
 Before you start the bot, please create `data/app_data.json` if not existing. It should only contain this:
 ```json
