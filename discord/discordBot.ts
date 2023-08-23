@@ -32,7 +32,7 @@ export async function startDiscordBot(discord: DiscordClient, newUsersString: st
 
         const removedUser = !existingUsers.some(item => item.toLowerCase() === cachedUser.name.toLowerCase());
         if (removedUser) {
-            removedUsers.push(cachedUser.name);
+            removedUsers.push(cachedUser);
         }
     }
 
@@ -43,7 +43,13 @@ export async function startDiscordBot(discord: DiscordClient, newUsersString: st
     }
 
     if (removedUsers.length > 0) {
-        announcement += `### Entfernte StreamerInnen\n\n${removedUsers.map(item => `- ${item}`).join('\n')}`
+        announcement += `### Entfernte StreamerInnen\n\n${removedUsers.map(item => `- ${item.name}`).join('\n')}`
+
+        // don't need the cached stuff for removed users anymore
+        const updatedCachedUsers = cachedUsers.filter(user => existingUsers.some(existingUser => existingUser.toLowerCase() === user.name.toLowerCase()));
+        const appData = files.getAppData();
+        appData.users = updatedCachedUsers;
+        files.setAppData(appData);
     }
 
     if (announcement != "") {
