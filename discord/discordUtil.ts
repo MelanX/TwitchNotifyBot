@@ -1,6 +1,12 @@
 import {
-    CategoryChannel, ChannelType,
-    Client as DiscordClient, Guild, Permissions, PermissionsBitField, Snowflake, TextChannel
+    CategoryChannel,
+    ChannelType,
+    Client as DiscordClient,
+    Guild,
+    PermissionsBitField,
+    Snowflake,
+    TextChannel,
+    EmbedBuilder, BaseMessageOptions
 } from "discord.js";
 import * as files from "../dataUtils";
 import {getProfileImage} from "../twitch/twitchBot";
@@ -130,6 +136,12 @@ export async function sendMessage(user: User): Promise<Snowflake> {
     return msg.id;
 }
 
+export async function logMessage(msg: string): Promise<void> {
+    let channel = await textChannel(discord, files.getConfig().loggingChannelId);
+    await channel.send(msg);
+    console.log(msg);
+}
+
 export async function editMessage(user: User): Promise<void> {
     const guild = await discord.guilds.fetch(files.getConfig().guildId);
     const channel = await textChannel(discord, user.channelId);
@@ -144,7 +156,22 @@ export async function removeMessage(user: User): Promise<void> {
     await msg.delete();
 }
 
-export async function makeMessage(guild: Guild, user: User): Promise<string> {
+export async function makeMessage(guild: Guild, user: User): Promise<BaseMessageOptions> {
     const role = await guild.roles.fetch(user.roleId);
-    return `${role} ist nun online mit **${user.gameName}**!\nhttps://www.twitch.tv/${user.name}`;
+    return {
+        content: `${role}\n<https://www.twitch.tv/${user.name}>`,
+        embeds: [new EmbedBuilder()
+            .setColor(0x6441a5)
+            .setTitle(user.name)
+            .setDescription(user.title)
+            .setURL(`https://www.twitch.tv/${user.name}`)
+            .setImage(user.icon)
+            .addFields(
+                {name: 'Online', value: `<t:${Math.floor(user.startDate.valueOf() / 1000)}:R>`},
+                {name: 'Aktuelles Spiel', value: `**${user.gameName}** *<t:${Math.floor(user.gameDate.valueOf() / 1000)}:R>*`},
+                {name: 'Vergangene Spiele', value: user.games.join('\n')}
+            )
+            .setThumbnail(user.gameIcon)
+            .setTimestamp(user.startDate)]
+    }
 }

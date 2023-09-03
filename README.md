@@ -12,7 +12,7 @@ Requires a file `tokens.env` with the following data:
 | `discord` | Bot secret key         |
 
 ---
-The config in `data.config.json` should look like this:
+The config in `data/config.json` should look like this:
 ```json
 {
   "users": [
@@ -31,7 +31,8 @@ The config in `data.config.json` should look like this:
   "guildId": "418741548226838560",
   "categoryId": "906959168160825375",
   "channelId": "554216244438499350",
-  "msgId": "596751004469428232"
+  "msgId": "596751004469428232",
+  "loggingChannelId": "1147943749008248902"
 }
 ```
 | Key                     | Entry                                                         |
@@ -40,8 +41,9 @@ The config in `data.config.json` should look like this:
 | `guildId`               | The ID of the guild where the bot is active                   |
 | `categoryId`            | The ID of the category for the text channels                  |
 | `channelId`             | The ID of the channel with the message to react for the roles |
-| `announcementChannelId` | The ID of the announcement channel from the server            |
 | `msgId`                 | The ID of the message with the reactions                      |
+| `announcementChannelId` | The ID of the announcement channel from the server            |
+| `loggingChannelId`      | The ID of the logging channel from the server                 |
 ---
 Before you start the bot, please create `data/app_data.json` if not existing. It should only contain this:
 ```json
