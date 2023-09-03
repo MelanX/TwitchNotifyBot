@@ -182,7 +182,7 @@ export async function makeMessage(guild: Guild, user: User): Promise<BaseMessage
         )
     }
 
-    if (user.games.length > 0) {
+    if (user.games != null && user.games.length > 0) {
         embed.addFields(
             {name: 'Vergangene Spiele', value: user.games.join('\n')}
         )

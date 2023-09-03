@@ -35,7 +35,9 @@ async function lookingForStreamers(twitch: ApiClient) {
                         user.isOnline = true;
                         user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                         user.gameName = stream.gameName;
-                        user.gameIcon = (await stream.getGame()).boxArtUrl;
+                        user.gameIcon = (await stream.getGame()).boxArtUrl
+                            .replace('{width}', '138')
+                            .replace('{height}', '190');
                         user.gameDate = new Date();
                         user.title = stream.title;
                         user.icon = (await stream.getUser()).profilePictureUrl;
@@ -49,7 +51,9 @@ async function lookingForStreamers(twitch: ApiClient) {
                             user.games.push(`${user.gameName}`);
                             user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                             user.gameName = stream.gameName;
-                            user.gameIcon = (await stream.getGame()).boxArtUrl;
+                            user.gameIcon = (await stream.getGame()).boxArtUrl
+                                .replace('{width}', '138')
+                                .replace('{height}', '190');
                             user.gameDate = new Date();
                             await editMessage(user);
                         }
