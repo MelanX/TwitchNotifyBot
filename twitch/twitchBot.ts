@@ -33,6 +33,7 @@ async function lookingForStreamers(twitch: ApiClient) {
                 if (stream.userName.toLowerCase() === user.name.toLowerCase()) {
                     if (!user.isOnline) {
                         user.isOnline = true;
+                        user.games = [];
                         user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                         user.gameName = stream.gameName;
                         user.gameIcon = (await stream.getGame()).boxArtUrl
