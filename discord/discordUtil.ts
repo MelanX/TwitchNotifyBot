@@ -158,20 +158,35 @@ export async function removeMessage(user: User): Promise<void> {
 
 export async function makeMessage(guild: Guild, user: User): Promise<BaseMessageOptions> {
     const role = await guild.roles.fetch(user.roleId);
-    return {
-        content: `${role}\n<https://www.twitch.tv/${user.name}>`,
-        embeds: [new EmbedBuilder()
-            .setColor(0x6441a5)
-            .setTitle(user.name)
-            .setDescription(user.title)
-            .setURL(`https://www.twitch.tv/${user.name}`)
-            .setImage(user.icon)
-            .addFields(
-                {name: 'Online', value: `<t:${Math.floor(user.startDate.valueOf() / 1000)}:R>`},
-                {name: 'Aktuelles Spiel', value: `**${user.gameName}** *<t:${Math.floor(user.gameDate.valueOf() / 1000)}:R>*`},
-                {name: 'Vergangene Spiele', value: user.games.join('\n')}
-            )
-            .setThumbnail(user.gameIcon)
-            .setTimestamp(user.startDate)]
+    let embed = new EmbedBuilder()
+        .setColor(0x6441a5)
+        .setTitle(user.name)
+        .setDescription(user.title)
+        .setURL(`https://www.twitch.tv/${user.name}`)
+        .setImage(user.icon)
+        .setThumbnail(user.gameIcon);
+
+    if (user.startDate !== undefined) {
+        embed.addFields(
+            {name: 'Online', value: `<t:${Math.floor(user.startDate.valueOf() / 1000)}:R>`, inline: true}
+        ).setTimestamp(Math.floor(user.startDate.valueOf() / 1000));
     }
+
+    if (user.gameDate !== undefined) {
+        embed.addFields(
+            {
+                name: 'Aktuelles Spiel',
+                value: `**${user.gameName}** *<t:${Math.floor(user.gameDate.valueOf() / 1000)}:R>*`,
+                inline: true
+            }
+        )
+    }
+
+    if (user.games.length > 0) {
+        embed.addFields(
+            {name: 'Vergangene Spiele', value: user.games.join('\n')}
+        )
+    }
+
+    return {content: `${role}\n<https://www.twitch.tv/${user.name}>`, embeds: [embed]}
 }
