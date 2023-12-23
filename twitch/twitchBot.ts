@@ -48,7 +48,7 @@ async function lookingForStreamers(twitch: ApiClient) {
                         await logMessage(`${user.name} is now online with ${stream.gameName}`)
                     } else {
                         if (String(user.gameId) !== stream.gameId) {
-                            await logMessage(`${user.name} changed game from ${user.gameName} to ${stream.gameName}`);
+                            await logMessage(`${user.name} changed game from \`${user.gameName}\` to \`${stream.gameName}\``);
                             user.games.push(`${user.gameName}`);
                             user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                             user.gameName = stream.gameName;
@@ -60,7 +60,7 @@ async function lookingForStreamers(twitch: ApiClient) {
                         }
 
                         if (user.title !== stream.title) {
-                            await logMessage(`${user.name} changed title from ${user.title} to ${stream.title}`);
+                            await logMessage(`${user.name} changed title from \`${user.title}\` to \`${stream.title}\``);
                             user.title = stream.title;
                             await editMessage(user);
                         }
