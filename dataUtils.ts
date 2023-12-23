@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import {AppConfig, AppData} from "./config";
+import {AppConfig, AppData, User} from "./config";
 
 const folder = 'data';
 const appData = folder + '/app_data.json';
@@ -20,7 +20,20 @@ export const createMissingFiles = (): void => {
 };
 
 export const getAppData = (): AppData => {
-    return JSON.parse(fs.readFileSync(appData, {encoding: 'utf-8'}));
+    let parsedData = JSON.parse(fs.readFileSync(appData, {encoding: 'utf-8'}));
+
+    if (parsedData.users) {
+        parsedData.users.forEach((user: User) => {
+            if (user.gameDate) {
+                user.gameDate = new Date(user.gameDate);
+            }
+            if (user.startDate) {
+                user.startDate = new Date(user.startDate);
+            }
+        });
+    }
+
+    return parsedData;
 };
 
 export const setAppData = (data: AppData): void => {

@@ -31,7 +31,8 @@ createMissingFiles();
         }
         appData.users.push({
             name: user,
-            isOnline: false
+            isOnline: false,
+            games: []
         });
         console.log(`New user found: ${user}`);
         newUsers.push(user);

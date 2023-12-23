@@ -5,8 +5,14 @@
     "CastCrafter",
     "Clym",
     "cpw",
+    "D1EGURK3",
+    "dechangeman",
     "derNiklaas",
-    "RGBPixl",
+    "Faister",
+    "JaybeeMangror",
+    "KarpfeDiemX",
+    "Kaupenjoe",
+    "Kunga",
     "Skate702",
     "Syncopsta",
     "Trojaner",
@@ -15,5 +21,7 @@
   "guildId": "588791705101139979",
   "categoryId": "594226938927775825",
   "channelId": "588791705101139985",
-  "msgId": "594249615835004949"
+  "msgId": "594249615835004949",
+  "announcementChannelId": "594919547966980102",
+  "loggingChannelId": "1147995011833675846"
 }

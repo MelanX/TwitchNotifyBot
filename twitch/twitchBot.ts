@@ -1,6 +1,6 @@
 import {ApiClient, HelixPaginatedResult, HelixStream, HelixUser} from "@twurple/api";
 import * as files from "../dataUtils";
-import {editMessage, removeMessage, sendMessage} from "../discord/discordUtil";
+import {editMessage, logMessage, removeMessage, sendMessage} from "../discord/discordUtil";
 import axios from "axios";
 
 export async function startTwitchBot(twitch: ApiClient): Promise<void> {
@@ -14,7 +14,7 @@ export async function startTwitchBot(twitch: ApiClient): Promise<void> {
 export async function getProfileImage(twitch: ApiClient, streamer: string): Promise<string | ArrayBuffer> {
     const user = await twitch.users.getUserByName(streamer);
 
-    if (!(user instanceof  HelixUser)) {
+    if (!(user instanceof HelixUser)) {
         return undefined;
     }
 
@@ -35,13 +35,32 @@ async function lookingForStreamers(twitch: ApiClient) {
                         user.isOnline = true;
                         user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
                         user.gameName = stream.gameName;
+                        user.gameIcon = (await stream.getGame()).boxArtUrl
+                            .replace('{width}', '138')
+                            .replace('{height}', '190');
+                        user.gameDate = new Date();
+                        user.title = stream.title;
+                        user.icon = (await stream.getUser()).profilePictureUrl;
                         user.msgId = await sendMessage(user);
-                        console.log(`${user.name} is now online with ${stream.gameName}`)
+                        user.startDate = stream.startDate;
+
+                        await logMessage(`${user.name} is now online with ${stream.gameName}`)
                     } else {
                         if (String(user.gameId) !== stream.gameId) {
+                            await logMessage(`${user.name} changed game from \`${user.gameName}\` to \`${stream.gameName}\``);
+                            user.games.push(`${user.gameName}`);
                             user.gameId = stream.gameId !== "" ? Number(stream.gameId) : null;
-                            console.log(`${user.name} changed game from ${user.gameName} to ${stream.gameName}`)
                             user.gameName = stream.gameName;
+                            user.gameIcon = (await stream.getGame()).boxArtUrl
+                                .replace('{width}', '138')
+                                .replace('{height}', '190');
+                            user.gameDate = new Date();
+                            await editMessage(user);
+                        }
+
+                        if (user.title !== stream.title) {
+                            await logMessage(`${user.name} changed title from \`${user.title}\` to \`${stream.title}\``);
+                            user.title = stream.title;
                             await editMessage(user);
                         }
                     }
@@ -60,11 +79,17 @@ async function lookingForStreamers(twitch: ApiClient) {
                     const user = appData.users[i];
                     if (prevOnlineUser.toLowerCase() === user.name.toLowerCase() && user.isOnline) {
                         user.isOnline = false;
+                        user.games = [];
                         user.gameId = null;
                         user.gameName = null;
+                        user.gameIcon = null;
+                        user.gameDate = null;
+                        user.title = null;
+                        user.icon = null;
+                        user.startDate = null;
                         await removeMessage(user);
                         user.msgId = null;
-                        console.log(`${user.name} stopped streaming`);
+                        await logMessage(`${user.name} stopped streaming`);
                     }
                 }
             }
