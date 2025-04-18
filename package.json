@@ -1,6 +1,6 @@
 {
   "name": "notifybot",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,8 @@
   "dependencies": {
     "@twurple/api": "^5.0.8",
     "@types/node-fetch": "2.5.12",
-    "axios": "^1.6.0",
-    "discord.js": "^14.14.1",
+    "axios": "1.8.2",
+    "discord.js": "^14.18.0",
     "dotenv": "8.2.0",
     "node-fetch": "3.2.10"
   },

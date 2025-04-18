@@ -19,7 +19,7 @@ export async function refreshData(discord: DiscordClient) {
     const appData = files.getAppData();
     for (const user of appData.users) {
         if (user.roleId == null) {
-            const role = await guild.roles.cache.find(r => r.name.toLowerCase() == user.name.toLowerCase());
+            const role = guild.roles.cache.find(r => r.name.toLowerCase() == user.name.toLowerCase());
             if (role != null) {
                 user.roleId = role.id;
             } else {
@@ -33,7 +33,7 @@ export async function refreshData(discord: DiscordClient) {
         }
 
         if (user.emoteId == null) {
-            const emote = await guild.emojis.cache.find(e => e.name.toLowerCase() == user.name.toLowerCase());
+            const emote = guild.emojis.cache.find(e => e.name.toLowerCase() == user.name.toLowerCase());
             if (emote != null) {
                 user.emoteId = emote.id;
             } else {
@@ -50,15 +50,15 @@ export async function refreshData(discord: DiscordClient) {
 
             const channel = await textChannel(discord, config.channelId);
             const msg = await channel.messages.fetch(config.msgId);
-            const reaction = await msg.reactions.cache.find(emote => emote.emoji.name.toLowerCase() == user.name.toLowerCase());
+            const reaction = msg.reactions.cache.find(emote => emote.emoji.name.toLowerCase() == user.name.toLowerCase());
             if (reaction == null) {
-                const emote = await guild.emojis.cache.find(e => e.name.toLowerCase() == user.name.toLowerCase());
+                const emote = guild.emojis.cache.find(e => e.name.toLowerCase() == user.name.toLowerCase());
                 await msg.react(emote);
             }
         }
 
         if (user.channelId == null) {
-            const channel = await guild.channels.cache.find(channel => channel.name.toLowerCase() == user.name.toLowerCase());
+            const channel = guild.channels.cache.find(channel => channel.name.toLowerCase() == user.name.toLowerCase());
             if (channel != null) {
                 user.channelId = channel.id;
             } else {

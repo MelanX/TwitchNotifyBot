@@ -9,7 +9,7 @@ export async function registerDiscord(): Promise<DiscordClient> {
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMembers,
             GatewayIntentBits.GuildModeration,
-            GatewayIntentBits.GuildEmojisAndStickers,
+            GatewayIntentBits.GuildExpressions,
             GatewayIntentBits.GuildIntegrations,
             GatewayIntentBits.GuildWebhooks,
             GatewayIntentBits.GuildInvites,
@@ -24,11 +24,11 @@ export async function registerDiscord(): Promise<DiscordClient> {
         ],
         partials: [Partials.User, Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction]
     });
-    await client.once('ready', async () => {
+    client.once('ready', async () => {
         console.log("Discord is ready");
     });
     await client.login(process.env.discord);
-    await client.user?.setStatus('dnd');
+    client.user?.setStatus('dnd');
     console.log("Connected to discord");
     return client;
 }
