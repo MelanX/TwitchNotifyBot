@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "tsc -b --clean",
+    "rebuild": "npm run clean && npm run build",
+    "dev": "node --watch index.js"
   },
   "keywords": [],
   "author": "MelanX",
